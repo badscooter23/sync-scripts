@@ -1,0 +1,33 @@
+if (($# == 1)); then
+   node=$1
+else
+   echo only one parameter - node number - should be supplied
+   exit 1
+fi
+
+set +x
+
+rsync -aP /raid/parquet_sf3000/call_center/ root@dgx-hera-$node:/raid/parquet_sf3000/call_center
+rsync -aP /raid/parquet_sf3000/catalog_page/ root@dgx-hera-$node:/raid/parquet_sf3000/catalog_page
+# rsync -aP /raid/parquet_sf3000/catalog_returns/ root@dgx-hera-$node:/raid/parquet_sf3000/catalog_returns
+## rsync -aP /raid/parquet_sf3000/catalog_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/catalog_sales
+rsync -aP /raid/parquet_sf3000/customer/ root@dgx-hera-$node:/raid/parquet_sf3000/customer
+rsync -aP /raid/parquet_sf3000/customer_address/ root@dgx-hera-$node:/raid/parquet_sf3000/customer_address
+rsync -aP /raid/parquet_sf3000/customer_demographics/ root@dgx-hera-$node:/raid/parquet_sf3000/customer_demographics
+rsync -aP /raid/parquet_sf3000/date_dim/ root@dgx-hera-$node:/raid/parquet_sf3000/date_dim
+rsync -aP /raid/parquet_sf3000/household_demographics/ root@dgx-hera-$node:/raid/parquet_sf3000/household_demographics
+rsync -aP /raid/parquet_sf3000/income_band/ root@dgx-hera-$node:/raid/parquet_sf3000/income_band
+# rsync -aP /raid/parquet_sf3000/inventory/ root@dgx-hera-$node:/raid/parquet_sf3000/inventory
+rsync -aP /raid/parquet_sf3000/item/ root@dgx-hera-$node:/raid/parquet_sf3000/item
+rsync -aP /raid/parquet_sf3000/promotion/ root@dgx-hera-$node:/raid/parquet_sf3000/promotion
+rsync -aP /raid/parquet_sf3000/reason/ root@dgx-hera-$node:/raid/parquet_sf3000/reason
+rsync -aP /raid/parquet_sf3000/ship_mode/ root@dgx-hera-$node:/raid/parquet_sf3000/ship_mode
+rsync -aP /raid/parquet_sf3000/store/ root@dgx-hera-$node:/raid/parquet_sf3000/store
+# rsync -aP /raid/parquet_sf3000/store_returns/ root@dgx-hera-$node:/raid/parquet_sf3000/store_returns
+## rsync -aP /raid/parquet_sf3000/store_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/store_sales
+rsync -aP /raid/parquet_sf3000/time_dim/ root@dgx-hera-$node:/raid/parquet_sf3000/time_dim
+rsync -aP /raid/parquet_sf3000/warehouse/ root@dgx-hera-$node:/raid/parquet_sf3000/warehouse
+rsync -aP /raid/parquet_sf3000/web_page/ root@dgx-hera-$node:/raid/parquet_sf3000/web_page
+# rsync -aP /raid/parquet_sf3000/web_returns/ root@dgx-hera-$node:/raid/parquet_sf3000/web_returns
+## rsync -aP /raid/parquet_sf3000/web_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/web_sales
+rsync -aP /raid/parquet_sf3000/web_site/ root@dgx-hera-$node:/raid/parquet_sf3000/web_site

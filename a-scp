@@ -1,0 +1,31 @@
+#!/bin/bash
+if (($# == 0)) || (($# > 2)); then
+else
+   echo "usage:   ./scp-all node_num [dataset]"
+
+   echo
+   echo "parms:"
+   echo "node_num      required - node the files will be copied to (using scp)"
+   echo "dataset       optional - defaults to parquet_sf3000"
+   echo
+   echo "              assumes dataset is located in /raid (currently hardcoded)"
+   echo
+   echo "exmaples:"
+   echo 
+   echo "   1) copy all files in parquet_sf3000 (all sub-directories) to dgx-hera-29"
+   echo
+   echo "      ./scp-all 25"
+   echo
+   echo "   2) copy all files in parquet_10tb_gpu/store_sales to dgx-hera-17"
+   echo 
+   echo "      ./scp-all 17 parquet_10t_gpu/store_sales"
+   exit 1
+fi
+
+node=$1
+
+echo "-------------------------------------------------------------------------------------------"
+echo          scp to root@dgx-hera-$node
+echo "-------------------------------------------------------------------------------------------"
+
+ls /raid/parquet_sf3000|xargs -I{} bash -c "scp -r /raid/parquet_sf3000/{} root@dgx-hera-$node:/raid/parquet_sf3000/ "

@@ -1,0 +1,25 @@
+if (($# == 2)); then
+   node=$1
+   dataset=$2
+else
+   echo "two parms are reuired:"
+   echo
+   echo "usage: rsync-big \<node\> \<dataset\>"
+
+   echo "currently only recognizes the big datasets: "
+   echo
+   echo "catalog_sales, store_sales, web_sales"
+   exit 1
+fi
+
+set +x
+
+if [[ dataset -eq "catalog_sales" ]]; then
+   rsync -aP /raid/parquet_sf3000/catalog_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/catalog_sales
+elif [[ dataset -eq "store_sales" ]]; then
+   rsync -aP /raid/parquet_sf3000/store_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/store_sales
+elif [[ dataset -eq "web_sales" ]]; then
+   rsync -aP /raid/parquet_sf3000/web_sales/ root@dgx-hera-$node:/raid/parquet_sf3000/web_sales
+else
+   echo "Unrecognize dataset: $dataset"
+fi

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+if (($# == 2)); then
+   from=$1 #todo get hostname and parse it instead of taking from as a parm
+   to=$2
+else
+   echo "two parms required:"
+   echo 
+   echo usae: ./p-scp   from_node to_node
+   exit 1
+fi
+
+if (( from < 17 )) || (( from > 32 )); then 
+   echo "from_node out of range. ($from)"
+fi
+
+if (( to < 17 )) || (( to > 32 )); then 
+   echo "to_node out of range. ($to)"
+fi
+
+
+nodes=( 2 3 4 5 6 7 8 )
+for i in "${nodes[@]}"
+do
+   echo $i
+   ls /raid/parquet_sf3000|xargs -I{} echo bash -c "scp -o BindAddress=172.$from.$(( (i % 8)+1 )).2 -r /raid/parquet_sf3000/{} 172.$to.1.2:/raid/parquet_sf3000/ &"
+done
+
+# original code from allesandro... basis for this script
+#
+# nodes=( 2 3 4 5 6 7 8 )
+# for i in "${nodes[@]}"
+# do
+# ls /raid/parquet_10tb_gpu|xargs -I{} bash -c "scp -o BindAddress=172.1.$i.2 -r /raid/parquet_10tb_gpu/{} 172.$i.1.2:/raid/parquet_10tb_gpu/ &"
+# done

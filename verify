@@ -1,0 +1,52 @@
+#!/bin/bash
+if (($# == 0)) || (($# > 2)); then
+   echo "usage: ./verify node [dataset]"
+   echo 
+
+   exit 1
+fi
+
+echo "-------------------------------------------------------------------------------------------"
+# nodes number is required
+node=$1
+if ((node < 10)); then
+   node_name=dgx-hera-0$node
+else
+   node_name=dgx-hera-$node
+fi
+
+#TODO for now it is assumed the datasets are in /raid, could take as parm
+dataset_dir="/raid"
+dataset="parquet_sf3000"   # defualt if $2 not specified
+if (($# == 2)); then
+   dataset=$2
+fi
+echo "dataset: [$dataset_dir]/$dataset"
+
+contents_dir=contents_$dataset
+mkdir -p "$contents_dir"
+echo "contents dir: $contents_dir"
+
+contents_file="contents_${dataset}_$node"
+echo "contents file: $contents_file"
+
+user="root"
+echo "user: root (assumed)"
+echo "node name: $node_name"
+echo "-------------------------------------------------------------------------------------------"
+
+# clean up an artifacts from the old way of verifying contents
+ssh "$user@$node_name" rm -f "$dataset_dir/$dataset/contents_*" 
+
+# do a find on remore serer and save contents file localls
+ssh "$user@$node_name" "find $dataset_dir/$dataset" | sort > "$contents_dir/$contents_file"
+
+if [[ -f "$contents_dir/$contents_file" ]]; then
+   echo "successfully created local contenst file ($contents_file) for $node_name"
+   wc -l "$contents_dir/$contents_file"
+else
+   echo "oops! failed to create $contents_dir/$contents_file for $node_name"
+fi
+
+
+
